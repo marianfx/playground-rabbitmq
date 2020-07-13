@@ -20,10 +20,13 @@ namespace RabbitMqWorkQueue.Worker
                     // declare the queue (idempotent -> same action always; if it exists, it uses it)
                     // must be the same channel as declared in the publisher
                     channel.QueueDeclare(queue: QUEUE_NAME,
-                                        durable: false,
+                                        durable: true,
                                         exclusive: false,
                                         autoDelete: false,
                                         arguments: null);
+
+                    // set prefetch to 1, so it assigns 1 job per busy worker
+                    channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
                     var consumer = new EventingBasicConsumer(channel);
                     consumer.Received += Consumer_Received;

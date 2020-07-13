@@ -17,7 +17,7 @@ namespace RabbitMqWorkQueue.NewTask
                 {
                     // declare the queue (idempotent -> same action always; if it exists, it uses it)
                     channel.QueueDeclare(queue: QUEUE_NAME,
-                                        durable: false,
+                                        durable: true,
                                         exclusive: false,
                                         autoDelete: false,
                                         arguments: null);
@@ -27,8 +27,8 @@ namespace RabbitMqWorkQueue.NewTask
                     var body = Encoding.UTF8.GetBytes(message);
 
                     // assign properties (header)
-                    //var properties = channel.CreateBasicProperties();
-                    //properties.Persistent = true;
+                    var properties = channel.CreateBasicProperties();
+                    properties.Persistent = true;
 
                     channel.BasicPublish(exchange: "",
                                         routingKey: QUEUE_NAME,
