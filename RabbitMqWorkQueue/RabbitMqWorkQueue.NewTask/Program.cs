@@ -27,8 +27,8 @@ namespace RabbitMqWorkQueue.NewTask
                     var body = Encoding.UTF8.GetBytes(message);
 
                     // assign properties (header)
-                    var properties = channel.CreateBasicProperties();
-                    properties.Persistent = true;
+                    //var properties = channel.CreateBasicProperties();
+                    //properties.Persistent = true;
 
                     channel.BasicPublish(exchange: "",
                                         routingKey: QUEUE_NAME,

@@ -28,7 +28,7 @@ namespace RabbitMqWorkQueue.Worker
                     var consumer = new EventingBasicConsumer(channel);
                     consumer.Received += Consumer_Received;
                     channel.BasicConsume(queue: QUEUE_NAME,
-                                        autoAck: true,
+                                        autoAck: false,
                                         consumer: consumer);
 
                     // note: block the thread so the context is intact (wait)
@@ -49,6 +49,8 @@ namespace RabbitMqWorkQueue.Worker
             Thread.Sleep(dots * 1000);
 
             Console.WriteLine(" [x] Finished processing");
+            var channel = ((EventingBasicConsumer)sender).Model;
+            channel.BasicAck(deliveryTag: e.DeliveryTag, multiple: false);
         }
     }
 }
